@@ -36,7 +36,7 @@ class HookAdminHome extends BaseModule
     /**
      * @return array
      */
-    public function getHooks()
+    public function getHooks(): array
     {
         return [
             [
