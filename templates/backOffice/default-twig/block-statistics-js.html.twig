@@ -31,7 +31,7 @@
             var month = e.date.month() + 1;
             var year = e.date.year();
             $('#statmois_label').html(e.date.format(displayDateFormat)).trigger('click');
-            $('#statmois').load('{{ path('admin.home.month.sales.block', {month: '__M__', year: '__Y__'}) }}'.replace('__M__', month).replace('__Y__', year));
+            $('#statmois').load('{{ path('admin.home.month.sales.block', {month: 999999991, year: 999999992}) }}'.replace('999999991', month).replace('999999992', year));
             jQplotDate = e.date;
             statInputActive(true);
             retrieveJQPlotJson(jQplotDate, function () { statInputActive(false); }, 0);
