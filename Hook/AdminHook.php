@@ -108,7 +108,7 @@ class AdminHook extends BaseHook
     {
         if (1 == HookAdminHome::getConfigValue(HookAdminHome::ACTIVATE_SALES, 1)) {
             $symbol = Currency::getDefaultCurrency()->getSymbol();
-            $request = $this->hasRequest() ? $this->getRequest() : null;
+            $request = $this->getRequest();
             $content = trim($this->render('block-sales-statistics.html.twig', [
                 'stats_today' => $this->buildStatsPeriod('today', 'today', $symbol, $request),
                 'stats_yesterday' => $this->buildStatsPeriod('yesterday', 'yesterday', $symbol, $request),
