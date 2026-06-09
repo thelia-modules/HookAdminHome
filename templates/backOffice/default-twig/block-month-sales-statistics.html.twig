@@ -1,0 +1,27 @@
+{# Month sales statistics — rendered via AJAX by HomeController::blockMonthSalesStatistics #}
+<div class="table-responsive">
+    <table class="table table-striped">
+        <tbody>
+        <tr>
+            <th>{{ 'Overall sales'|trans({}, 'hookadminhome.bo.default') }}</th>
+            <td>{{ stats_month.salesFormatted }}</td>
+        </tr>
+        <tr>
+            <th>{{ 'Sales excluding shipping'|trans({}, 'hookadminhome.bo.default') }}</th>
+            <td>{{ stats_month.salesNoShippingFormatted }}</td>
+        </tr>
+        <tr>
+            <th>{{ 'Previous month sales'|trans({}, 'hookadminhome.bo.default') }}</th>
+            <td>{{ stats_prev_month.salesFormatted }}</td>
+        </tr>
+        <tr>
+            <th>{{ 'Orders'|trans({}, 'hookadminhome.bo.default') }}</th>
+            <td>{{ stats_month.orderCount }}</td>
+        </tr>
+        <tr>
+            <th>{{ 'Average cart'|trans({}, 'hookadminhome.bo.default') }}</th>
+            <td>{{ stats_month.averageCartFormatted }}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>

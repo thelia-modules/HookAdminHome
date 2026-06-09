@@ -1,0 +1,6 @@
+{# News block — loaded via JS; content fetched by AJAX from ajax/thelia_news_feed #}
+{% if is_granted('VIEW', {resource: 'admin.module', module: 'HookAdminHome'}) %}
+<div class="feed-list">
+    <div class="alert alert-info">{{ 'Loading Thelia lastest news...'|trans({}, 'hookadminhome.bo.default') }}</div>
+</div>
+{% endif %}

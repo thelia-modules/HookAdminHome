@@ -1,0 +1,51 @@
+{# Module configuration form fragment — no extends, Bootstrap 5 card #}
+<div class="card mb-3">
+    <div class="card-header">
+        <h5 class="card-title mb-0">{{ 'Hook Admin Home config'|trans({}, 'hookadminhome') }}</h5>
+    </div>
+    <div class="card-body">
+        {{ form_start(form, {'action': path('admin.home.config'), 'method': 'POST'}) }}
+
+        <div class="mb-3 form-check">
+            {{ form_widget(form['enabled-stats'], {'attr': {'class': 'form-check-input'}}) }}
+            {{ form_label(form['enabled-stats'], null, {'label_attr': {'class': 'form-check-label'}}) }}
+            {% if form['enabled-stats'].vars.help is defined and form['enabled-stats'].vars.help %}
+                <div class="form-text">{{ form['enabled-stats'].vars.help }}</div>
+            {% endif %}
+            {{ form_errors(form['enabled-stats']) }}
+        </div>
+
+        <div class="mb-3 form-check">
+            {{ form_widget(form['enabled-news'], {'attr': {'class': 'form-check-input'}}) }}
+            {{ form_label(form['enabled-news'], null, {'label_attr': {'class': 'form-check-label'}}) }}
+            {% if form['enabled-news'].vars.help is defined and form['enabled-news'].vars.help %}
+                <div class="form-text">{{ form['enabled-news'].vars.help }}</div>
+            {% endif %}
+            {{ form_errors(form['enabled-news']) }}
+        </div>
+
+        <div class="mb-3 form-check">
+            {{ form_widget(form['enabled-sales'], {'attr': {'class': 'form-check-input'}}) }}
+            {{ form_label(form['enabled-sales'], null, {'label_attr': {'class': 'form-check-label'}}) }}
+            {% if form['enabled-sales'].vars.help is defined and form['enabled-sales'].vars.help %}
+                <div class="form-text">{{ form['enabled-sales'].vars.help }}</div>
+            {% endif %}
+            {{ form_errors(form['enabled-sales']) }}
+        </div>
+
+        <div class="mb-3 form-check">
+            {{ form_widget(form['enabled-info'], {'attr': {'class': 'form-check-input'}}) }}
+            {{ form_label(form['enabled-info'], null, {'label_attr': {'class': 'form-check-label'}}) }}
+            {% if form['enabled-info'].vars.help is defined and form['enabled-info'].vars.help %}
+                <div class="form-text">{{ form['enabled-info'].vars.help }}</div>
+            {% endif %}
+            {{ form_errors(form['enabled-info']) }}
+        </div>
+
+        <button type="submit" class="btn btn-sm btn-success">
+            <i class="bi bi-save"></i> {{ 'Save'|trans({}, 'hookadminhome') }}
+        </button>
+
+        {{ form_end(form) }}
+    </div>
+</div>

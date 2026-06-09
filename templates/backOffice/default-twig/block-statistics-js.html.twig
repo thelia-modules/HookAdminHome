@@ -1,0 +1,115 @@
+{# Statistics JS — kept with jQuery+jqplot from CDN (no clean Stimulus port for jqplot) #}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqPlot/1.0.8/jquery.jqplot.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqPlot/1.0.8/plugins/jqplot.highlighter.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqPlot/1.0.8/plugins/jqplot.pointLabels.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment-with-locales.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+
+<script>
+(function () {
+    var jQplotDate = moment();
+    var $datePicker = document.getElementById('date-picker');
+    var displayDateFormat = '{{ 'YYYY-MM'|trans({}, 'hookadminhome.bo.default') }}';
+    var url = "{{ path('admin.home.stats') }}";
+    var jQplotData;
+    var jQPlotInstance;
+    var valueFormats;
+
+    if ($datePicker) {
+        $datePicker.value = moment().format(displayDateFormat);
+    }
+
+    // Bootstrap datetimepicker requires jQuery — kept for compatibility
+    jQuery(function ($) {
+        var langcode = document.documentElement.lang ? document.documentElement.lang.substring(0,2) : 'en';
+
+        $('#date-picker').datetimepicker({
+            locale: langcode,
+            viewMode: 'months',
+            format: displayDateFormat
+        }).on('dp.change', function (e) {
+            var month = e.date.month() + 1;
+            var year = e.date.year();
+            $('#statmois_label').html(e.date.format(displayDateFormat)).trigger('click');
+            $('#statmois').load('{{ path('admin.home.month.sales.block', {month: '__M__', year: '__Y__'}) }}'.replace('__M__', month).replace('__Y__', year));
+            jQplotDate = e.date;
+            statInputActive(true);
+            retrieveJQPlotJson(jQplotDate, function () { statInputActive(false); }, 0);
+        });
+
+        $('#span-calendar').click(function () { $('#date-picker').focus(); });
+
+        function statInputActive(type) {
+            $('#date-picker').attr('readonly', type);
+            $('.js-stats-refresh').attr('disabled', type);
+        }
+
+        var jQPlotsOptions = {
+            animate: false,
+            axesDefaults: { tickOptions: { showMark: true, showGridline: true } },
+            axes: {
+                xaxis: { borderColor: '#ccc', ticks: [], tickOptions: { showGridline: false } },
+                yaxis: { min: 0, tickOptions: { showGridline: true, showMark: false, showLabel: true, shadow: false } }
+            },
+            seriesDefaults: { lineWidth: 3, shadow: false, markerOptions: { shadow: false, style: 'filledCircle', size: 12 } },
+            grid: { background: '#FFF', shadow: false, borderColor: '#FFF' },
+            highlighter: {
+                show: true, sizeAdjust: 7, tooltipLocation: 'n',
+                tooltipContentEditor: function (str, seriesIndex, pointIndex, plot) {
+                    return $.jqplot.sprintf(valueFormats[seriesIndex], plot.data[seriesIndex][pointIndex][1]);
+                }
+            }
+        };
+
+        retrieveJQPlotJson(jQplotDate);
+
+        $('[data-toggle="jqplot"]').click(function () {
+            $(this).toggleClass('active');
+            jsonSuccessLoad();
+        });
+
+        $('.js-stats-refresh').click(function () {
+            statInputActive(true);
+            retrieveJQPlotJson(jQplotDate, function () { statInputActive(false); }, 1);
+        });
+
+        function retrieveJQPlotJson(moment, callback, flush) {
+            flush = flush || 0;
+            $.getJSON(url, { month: moment.month() + 1, year: moment.year(), flush: flush })
+                .done(function (data) { jQplotData = data; jsonSuccessLoad(); if (callback) callback(); })
+                .fail(jsonFailLoad);
+        }
+
+        function initJqplotData(json) {
+            var series = [], seriesColors = [];
+            valueFormats = [];
+            $('[data-toggle="jqplot"].active').each(function () {
+                var position = $(this).index();
+                var serie = json.series[position];
+                series.push(serie.data);
+                seriesColors.push(serie.color);
+                valueFormats.push(serie.valueFormat);
+            });
+            var days = json.series[0].data.length;
+            var ticks = [];
+            for (var i = 1; i < days + 1; i++) { ticks.push([i - 1, i]); }
+            jQPlotsOptions.axes.xaxis.ticks = ticks;
+            jQPlotsOptions.title = json.title;
+            jQPlotsOptions.seriesColors = seriesColors;
+            return series;
+        }
+
+        function jsonFailLoad() {
+            document.getElementById('jqplot').innerHTML =
+                '<div class="alert alert-danger">{{ 'An error occurred while reading from JSON file'|trans({}, 'hookadminhome.bo.default')|e('js') }}</div>';
+        }
+
+        function jsonSuccessLoad() {
+            var series = initJqplotData(jQplotData);
+            if (jQPlotInstance) { jQPlotInstance.destroy(); }
+            jQPlotInstance = $.jqplot('jqplot', series, jQPlotsOptions);
+            window.addEventListener('resize', function () { jQPlotInstance.replot({ resetAxes: true }); });
+        }
+    });
+}());
+</script>

@@ -34,7 +34,7 @@ class ConfigurationController extends BaseAdminController
             return $response;
         }
 
-        $form = $this->createForm('hookadminhome.config.form');
+        $form = $this->createForm(\HookAdminHome\Form\Configuration::getName());
         $error_message = null;
 
         try {

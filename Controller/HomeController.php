@@ -21,6 +21,7 @@ use Thelia\Model\ConfigQuery;
 use Thelia\Model\Currency;
 use Thelia\Model\CustomerQuery;
 use Thelia\Model\OrderQuery;
+use Thelia\Tools\MoneyFormat;
 
 /**
  * Class HomeController.
@@ -72,7 +73,7 @@ class HomeController extends BaseAdminController
     }
 
     #[Route("/admin/home/month-sales-block/{month}/{year}", name: "admin.home.month.sales.block", requirements: ["month" => "\d+", "year" => "\d+"])]
-    public function blockMonthSalesStatistics($month, $year)
+    public function blockMonthSalesStatistics(int $month, int $year)
     {
         $baseDate = sprintf('%04d-%02d', $year, $month);
 
@@ -82,12 +83,39 @@ class HomeController extends BaseAdminController
         $prevMonthStartDate = date('Y-m-01', strtotime("$baseDate -1 month"));
         $prevMonthEndDate = date('Y-m-t', strtotime($prevMonthStartDate));
 
-        return $this->render('block-month-sales-statistics', [
-            'startDate' => $startDate,
-            'endDate' => $endDate,
-            'prevMonthStartDate' => $prevMonthStartDate,
-            'prevMonthEndDate' => $prevMonthEndDate,
+        $symbol = Currency::getDefaultCurrency()->getSymbol();
+        $request = $this->getRequest();
+
+        return $this->render('block-month-sales-statistics.html.twig', [
+            'stats_month' => $this->buildStatsPeriod($startDate, $endDate, $symbol, $request),
+            'stats_prev_month' => $this->buildStatsPeriod($prevMonthStartDate, $prevMonthEndDate, $symbol, $request),
         ]);
+    }
+
+    #[Route("/admin/ajax/thelia_news_feed", name: "admin.news-feed")]
+    public function newsFeedAction(): \Symfony\Component\HttpFoundation\Response
+    {
+        $feedItems = [];
+
+        try {
+            $feed = new \SimplePie();
+            $feed->set_feed_url('https://github.com/thelia/thelia/commits/main.atom');
+            $feed->set_timeout(30);
+            $feed->init();
+
+            foreach ($feed->get_items(0, 6) as $item) {
+                $feedItems[] = [
+                    'title' => $item->get_title() ?? '',
+                    'description' => $item->get_description() ?? '',
+                    'url' => $item->get_permalink() ?? '#',
+                    'date' => $item->get_date('U') ? new \DateTime('@'.$item->get_date('U')) : new \DateTime(),
+                ];
+            }
+        } catch (\Exception $e) {
+            // silently fail — template shows empty list
+        }
+
+        return $this->render('ajax/thelia_news_feed.html.twig', ['feedItems' => $feedItems]);
     }
 
     /**
@@ -139,6 +167,28 @@ class HomeController extends BaseAdminController
         $cancelledOrderSeries->valueFormat = '%d';
 
         return $data;
+    }
+
+    private function buildStatsPeriod(string $startDate, string $endDate, string $symbol, \Symfony\Component\HttpFoundation\Request $request): array
+    {
+        $start = new \DateTime($startDate);
+        $end = new \DateTime($endDate);
+
+        $sales = OrderQuery::getSaleStats($start, $end, true, true);
+        $salesNoShipping = OrderQuery::getSaleStats($start, $end, false, true);
+        $orderCount = OrderQuery::getOrderStats($start, $end, null);
+
+        $moneyFormat = MoneyFormat::getInstance($request);
+
+        return [
+            'salesFormatted' => $moneyFormat->format($sales, null, null, null, $symbol),
+            'salesNoShippingFormatted' => $moneyFormat->format($salesNoShipping, null, null, null, $symbol),
+            'orderCount' => $orderCount,
+            'averageCartFormatted' => $moneyFormat->format(
+                $orderCount > 0 ? round($salesNoShipping / $orderCount, 2) : 0,
+                null, null, null, $symbol
+            ),
+        ];
     }
 
     /**

@@ -1,0 +1,25 @@
+{# Thelia version / releases block — data supplied by AdminHook::blockTheliaInformation #}
+{% if is_granted('VIEW', {resource: 'admin.module', module: 'HookAdminHome'}) %}
+<div class="table-responsive">
+    <table class="table table-striped">
+        <tbody>
+        <tr>
+            <th>{{ 'Your version'|trans({}, 'hookadminhome.bo.default') }}</th>
+            <td>{{ thelia_version }}</td>
+        </tr>
+        {% if latestStableRelease %}
+        <tr>
+            <th>{{ 'Latest stable version'|trans({}, 'hookadminhome.bo.default') }}</th>
+            <td><a href="{{ latestStableRelease.html_url }}">{{ latestStableRelease.tag_name }}</a></td>
+        </tr>
+        {% endif %}
+        {% if latestPreRelease %}
+        <tr>
+            <th>{{ 'Latest pre-release'|trans({}, 'hookadminhome.bo.default') }}</th>
+            <td><a href="{{ latestPreRelease.html_url }}">{{ latestPreRelease.tag_name }}</a></td>
+        </tr>
+        {% endif %}
+        </tbody>
+    </table>
+</div>
+{% endif %}

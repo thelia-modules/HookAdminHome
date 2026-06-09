@@ -1,0 +1,15 @@
+{# News JS — load feed content via fetch into .feed-list #}
+{% if is_granted('VIEW', {resource: 'admin.module', module: 'HookAdminHome'}) %}
+<script>
+(function () {
+    var feedList = document.querySelector('.feed-list');
+    if (!feedList) return;
+    fetch('{{ path('admin.news-feed') }}')
+        .then(function (r) { return r.text(); })
+        .then(function (html) { feedList.innerHTML = html; })
+        .catch(function () {
+            feedList.innerHTML = '<div class="alert alert-danger">{{ 'An error occurred while reading from JSON file'|trans({}, 'hookadminhome.bo.default')|e('js') }}</div>';
+        });
+}());
+</script>
+{% endif %}

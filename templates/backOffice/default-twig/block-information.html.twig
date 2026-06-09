@@ -1,0 +1,71 @@
+{# Stats counters block — rendered by AdminHook::blockStatistics via home.top hook #}
+{% set has_any = false %}
+
+{% if is_granted('VIEW', 'admin.customer') %}
+    {% set has_any = true %}
+{% endif %}
+{% if is_granted('VIEW', 'admin.category') %}
+    {% set has_any = true %}
+{% endif %}
+{% if is_granted('VIEW', 'admin.product') %}
+    {% set has_any = true %}
+{% endif %}
+{% if is_granted('VIEW', 'admin.order') %}
+    {% set has_any = true %}
+{% endif %}
+
+{% if has_any %}
+<div class="card mb-3" id="block-information">
+    <div class="card-body">
+        <div class="row g-3 text-center">
+            {% if is_granted('VIEW', 'admin.customer') %}
+            <div class="col-6 col-md-2">
+                <a href="{{ path('admin.customers') }}" class="text-decoration-none">
+                    <h2 class="mb-0">{{ customerCount }}</h2>
+                    <p class="text-muted mb-0">{{ 'Customers'|trans({}, 'hookadminhome.bo.default') }}</p>
+                </a>
+            </div>
+            {% endif %}
+
+            {% if is_granted('VIEW', 'admin.category') %}
+            <div class="col-6 col-md-2">
+                <a href="{{ path('admin.categories.default') }}" class="text-decoration-none">
+                    <h2 class="mb-0">{{ categoryCount }}</h2>
+                    <p class="text-muted mb-0">{{ 'Categories'|trans({}, 'hookadminhome.bo.default') }}</p>
+                </a>
+            </div>
+            {% endif %}
+
+            {% if is_granted('VIEW', 'admin.product') %}
+            <div class="col-6 col-md-2">
+                <a href="{{ path('admin.categories.default') }}" class="text-decoration-none">
+                    <h2 class="mb-0">{{ productCount }}</h2>
+                    <p class="text-muted mb-0">{{ 'Products'|trans({}, 'hookadminhome.bo.default') }}</p>
+                </a>
+            </div>
+            <div class="col-6 col-md-2">
+                <a href="{{ path('admin.categories.default') }}" class="text-decoration-none">
+                    <h2 class="mb-0">{{ productOnlineCount }}</h2>
+                    <p class="text-muted mb-0">{{ 'Online products'|trans({}, 'hookadminhome.bo.default') }}</p>
+                </a>
+            </div>
+            <div class="col-6 col-md-2">
+                <a href="{{ path('admin.categories.default') }}" class="text-decoration-none">
+                    <h2 class="mb-0">{{ productOfflineCount }}</h2>
+                    <p class="text-muted mb-0">{{ 'Offline products'|trans({}, 'hookadminhome.bo.default') }}</p>
+                </a>
+            </div>
+            {% endif %}
+
+            {% if is_granted('VIEW', 'admin.order') %}
+            <div class="col-6 col-md-2">
+                <a href="{{ path('admin.order.list') }}" class="text-decoration-none">
+                    <h2 class="mb-0">{{ orderCount }}</h2>
+                    <p class="text-muted mb-0">{{ 'Orders'|trans({}, 'hookadminhome.bo.default') }}</p>
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endif %}

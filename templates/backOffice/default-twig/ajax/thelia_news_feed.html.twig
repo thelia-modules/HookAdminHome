@@ -1,0 +1,25 @@
+{# Thelia Github commits feed — rendered via AJAX; items supplied by HomeController::newsFeedAction #}
+<div class="accordion" id="accordion">
+    {% for item in feedItems %}
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="heading-{{ loop.index }}">
+            <button class="accordion-button {% if not loop.first %}collapsed{% endif %}" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#collapse-{{ loop.index }}"
+                    aria-expanded="{{ loop.first ? 'true' : 'false' }}" aria-controls="collapse-{{ loop.index }}">
+                {{ item.title|striptags }} - {{ item.date|date('d/m/Y') }}
+            </button>
+        </h2>
+        <div id="collapse-{{ loop.index }}" class="accordion-collapse collapse {% if loop.first %}show{% endif %}"
+             aria-labelledby="heading-{{ loop.index }}" data-bs-parent="#accordion">
+            <div class="accordion-body">
+                <p>{{ item.description|striptags|slice(0, 250) }}{% if item.description|striptags|length > 250 %}...{% endif %}</p>
+                <a href="{{ item.url }}" target="_blank" class="btn btn-sm btn-primary">
+                    <i class="bi bi-book"></i> {{ 'Read more'|trans({}, 'hookadminhome') }}
+                </a>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <p class="text-muted">{{ 'No news available.'|trans({}, 'hookadminhome') }}</p>
+    {% endfor %}
+</div>
