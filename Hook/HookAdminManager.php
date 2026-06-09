@@ -18,7 +18,7 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Thelia\Core\Event\Hook\HookRenderEvent;
 use Thelia\Core\Form\TheliaFormFactory;
 use Thelia\Core\Hook\BaseHook;
-use Thelia\Core\Template\ParserResolver;
+use Thelia\Core\Template\Parser\ParserResolver;
 
 class HookAdminManager extends BaseHook
 {

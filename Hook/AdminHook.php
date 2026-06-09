@@ -18,7 +18,7 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Thelia\Core\Event\Hook\HookRenderBlockEvent;
 use Thelia\Core\Event\Hook\HookRenderEvent;
 use Thelia\Core\Hook\BaseHook;
-use Thelia\Core\Template\ParserResolver;
+use Thelia\Core\Template\Parser\ParserResolver;
 use Thelia\Core\TheliaKernel;
 use Thelia\Model\CategoryQuery;
 use Thelia\Model\Currency;
