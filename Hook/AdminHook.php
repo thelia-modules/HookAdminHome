@@ -19,7 +19,7 @@ use Thelia\Core\Event\Hook\HookRenderBlockEvent;
 use Thelia\Core\Event\Hook\HookRenderEvent;
 use Thelia\Core\Hook\BaseHook;
 use Thelia\Core\Template\ParserResolver;
-use Thelia\Core\Thelia;
+use Thelia\Core\TheliaKernel;
 use Thelia\Model\CategoryQuery;
 use Thelia\Model\Currency;
 use Thelia\Model\CustomerQuery;
@@ -172,7 +172,7 @@ class AdminHook extends BaseHook
                     [
                         'latestStableRelease' => $releases['latestStableRelease'],
                         'latestPreRelease' => $releases['latestPreRelease'],
-                        'thelia_version' => Thelia::THELIA_VERSION,
+                        'thelia_version' => TheliaKernel::THELIA_VERSION,
                     ]
                 )
             );
