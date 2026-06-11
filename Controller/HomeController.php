@@ -86,7 +86,7 @@ class HomeController extends BaseAdminController
         $symbol = Currency::getDefaultCurrency()->getSymbol();
         $request = $this->getRequest();
 
-        return $this->render('block-month-sales-statistics.html.twig', [
+        return $this->render('block-month-sales-statistics', [
             'stats_month' => $this->buildStatsPeriod($startDate, $endDate, $symbol, $request),
             'stats_prev_month' => $this->buildStatsPeriod($prevMonthStartDate, $prevMonthEndDate, $symbol, $request),
         ]);
@@ -115,7 +115,7 @@ class HomeController extends BaseAdminController
             // silently fail — template shows empty list
         }
 
-        return $this->render('ajax/thelia_news_feed.html.twig', ['feedItems' => $feedItems]);
+        return $this->render('ajax/thelia_news_feed', ['feedItems' => $feedItems]);
     }
 
     /**
