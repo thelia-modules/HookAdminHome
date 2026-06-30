@@ -10,7 +10,7 @@
 (function () {
     var jQplotDate = moment();
     var $datePicker = document.getElementById('date-picker');
-    var displayDateFormat = '{{ 'YYYY-MM'|trans({}, 'hookadminhome.bo.default') }}';
+    var displayDateFormat = '{{ 'YYYY-MM'|trans({}, 'hookadminhome') }}';
     var url = "{{ path('admin.home.stats') }}";
     var jQplotData;
     var jQPlotInstance;
@@ -111,7 +111,7 @@
 
         function jsonFailLoad() {
             document.getElementById('jqplot').innerHTML =
-                '<div class="alert alert-danger">{{ 'An error occurred while reading from JSON file'|trans({}, 'hookadminhome.bo.default')|e('js') }}</div>';
+                '<div class="alert alert-danger">{{ 'An error occurred while reading from JSON file'|trans({}, 'hookadminhome')|e('js') }}</div>';
         }
 
         function jsonSuccessLoad() {

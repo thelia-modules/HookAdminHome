@@ -11,7 +11,9 @@
  */
 
 return [
+    'An error occurred while reading from JSON file' => 'An error occurred while reading from JSON file',
+    'Sales statistics' => 'Sales statistics',
     'Stats on %month/%year' => 'Stats on %month/%year',
     'Thelia informations' => 'Thelia information',
-    'Sales statistics' => 'Sales statistics',
+    'YYYY-MM' => 'YYYY-MM',
 ];

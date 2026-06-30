@@ -11,8 +11,10 @@
  */
 
 return [
+    'An error occurred while reading from JSON file' => 'Désolé, une erreur s\'est produite pendant la récupération des données.',
     'Sales statistics' => 'Statistiques de vente',
     'Stats on %month/%year' => 'Statistiques pour %month/%year',
     'Thelia Github activity' => 'Thelia sur Github',
     'Thelia news' => 'Actualité Thelia',
+    'YYYY-MM' => 'MM/YYYY',
 ];

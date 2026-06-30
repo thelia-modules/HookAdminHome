@@ -8,7 +8,7 @@
         .then(function (r) { return r.text(); })
         .then(function (html) { feedList.innerHTML = html; })
         .catch(function () {
-            feedList.innerHTML = '<div class="alert alert-danger">{{ 'An error occurred while reading from JSON file'|trans({}, 'hookadminhome.bo.default')|e('js') }}</div>';
+            feedList.innerHTML = '<div class="alert alert-danger">{{ 'An error occurred while reading from JSON file'|trans({}, 'hookadminhome')|e('js') }}</div>';
         });
 }());
 </script>
