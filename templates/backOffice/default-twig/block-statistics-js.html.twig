@@ -1,10 +1,10 @@
-{# Statistics JS — kept with jQuery+jqplot from CDN (no clean Stimulus port for jqplot) #}
-{# The default-twig BO ships no global jQuery, so it must come with the jqplot/datetimepicker stack #}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jqPlot/1.0.8/jquery.jqplot.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jqPlot/1.0.8/plugins/jqplot.highlighter.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jqPlot/1.0.8/plugins/jqplot.pointLabels.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment-with-locales.min.js"></script>
+{# Statistics JS — jQuery+jqplot (no clean Stimulus port for jqplot), shipped with the module. #}
+{# The default-twig BO ships no global jQuery, so the module carries the jqplot/moment stack itself. #}
+<script src="{{ module_asset('HookAdminHome', 'assets/js/jquery.min.js') }}"></script>
+<script src="{{ module_asset('HookAdminHome', 'assets/js/jquery.jqplot.min.js') }}"></script>
+<script src="{{ module_asset('HookAdminHome', 'assets/js/jqplot.highlighter.min.js') }}"></script>
+<script src="{{ module_asset('HookAdminHome', 'assets/js/jqplot.pointLabels.min.js') }}"></script>
+<script src="{{ module_asset('HookAdminHome', 'assets/js/moment-with-locales.min.js') }}"></script>
 
 <script>
 (function () {
