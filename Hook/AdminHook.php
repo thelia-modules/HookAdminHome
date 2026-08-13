@@ -120,8 +120,9 @@ class AdminHook extends BaseHook
 
                 $theliaReleases = json_decode($results, true);
 
-                $publishedAtSort = function ($a, $b) {
-                    return (new \DateTime($a['published_at'])) < (new \DateTime($b['published_at']));
+                // Most recent release first: $stableReleases[0] and $preReleases[0] are read below.
+                $publishedAtSort = static function (array $a, array $b): int {
+                    return (new \DateTime($b['published_at'])) <=> (new \DateTime($a['published_at']));
                 };
 
                 $stableReleases = array_filter($theliaReleases, static function ($theliaRelease) {
