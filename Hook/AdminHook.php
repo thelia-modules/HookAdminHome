@@ -222,8 +222,6 @@ class AdminHook extends BaseHook
 
                 $results = curl_exec($resource);
 
-                curl_close($resource);
-
                 $theliaReleases = json_decode($results, true);
 
                 // Most recent release first: $stableReleases[0] and $preReleases[0] are read below.
