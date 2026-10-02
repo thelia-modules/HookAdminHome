@@ -44,6 +44,7 @@ class HookAdminHome extends BaseModule
                 'code' => 'hook_home_stats',
                 'title' => 'Hook Home Stats',
                 'description' => 'Hook to change default stats',
+                'active' => true,
             ],
         ];
     }
