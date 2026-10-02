@@ -47,6 +47,8 @@ class AdminHook extends BaseHook
         return [
             'home.top' => [
                 ['type' => 'back', 'method' => 'blockInformation'],
+            ],
+            'home.bottom' => [
                 ['type' => 'back', 'method' => 'blockStatistics'],
             ],
             'home.js' => [
