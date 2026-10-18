@@ -224,7 +224,11 @@ class AdminHook extends BaseHook
 
                 $results = curl_exec($resource);
 
-                $theliaReleases = json_decode($results, true);
+                // A failed request or an API error payload (rate limit...) is not a list of releases.
+                $theliaReleases = json_decode((string) $results, true);
+                $theliaReleases = \is_array($theliaReleases)
+                    ? array_filter($theliaReleases, static fn ($theliaRelease): bool => \is_array($theliaRelease) && isset($theliaRelease['prerelease'], $theliaRelease['published_at'], $theliaRelease['tag_name']))
+                    : [];
 
                 // Most recent release first: $stableReleases[0] and $preReleases[0] are read below.
                 $publishedAtSort = static function (array $a, array $b): int { return (new \DateTime($b['published_at'])) <=> (new \DateTime($a['published_at'])); };
